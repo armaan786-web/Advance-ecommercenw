@@ -40,6 +40,33 @@ from paypal.standard.forms import PayPalPaymentsForm
 
 utc=pytz.UTC
 
+# def index(request):
+#     addon = BasicAddon.objects.filter().first()
+#     brands = Brand.objects.filter(active=True)
+#     products = Product.objects.filter(status="published", featured=True).order_by("-id")[:10]
+#     top_selling_products = Product.objects.filter(status="published").order_by("-orders")[:10]
+#     hot_deal = Product.objects.filter(status="published", hot_deal=True).first()
+#     all_products = Product.objects.filter(status="published")[:16]
+#     posts = Post.objects.filter(status="published", featured=True)
+    
+#     query = request.GET.get("q")
+#     if query:
+#         products = products.filter(Q(title__icontains=query)|Q(description__icontains=query)).distinct()
+        
+    
+    
+#     context = {
+#         "all_products":all_products,
+#         "addon":addon,
+#         "posts":posts,
+#         "brands":brands,
+#         'hot_deal':hot_deal,
+#         "products":products,
+#         "top_selling_products":top_selling_products,
+#     }
+#     return render(request, "store/index.html", context)
+
+
 def index(request):
     addon = BasicAddon.objects.filter().first()
     brands = Brand.objects.filter(active=True)
@@ -51,19 +78,19 @@ def index(request):
     
     query = request.GET.get("q")
     if query:
-        products = products.filter(Q(title__icontains=query)|Q(description__icontains=query)).distinct()
-        
-    
-    
+        products = products.filter(Q(title__icontains=query) | Q(description__icontains=query)).distinct()
+
+    # Ensure addon is not None before passing it to the template
     context = {
-        "all_products":all_products,
-        "addon":addon,
-        "posts":posts,
-        "brands":brands,
-        'hot_deal':hot_deal,
-        "products":products,
-        "top_selling_products":top_selling_products,
+        "all_products": all_products,
+        "addon": addon if addon else None,  # Avoid AttributeError
+        "posts": posts,
+        "brands": brands,
+        "hot_deal": hot_deal,
+        "products": products,
+        "top_selling_products": top_selling_products,
     }
+
     return render(request, "store/index.html", context)
 
 
