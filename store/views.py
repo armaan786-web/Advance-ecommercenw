@@ -80,6 +80,8 @@ def index(request):
     if query:
         products = products.filter(Q(title__icontains=query) | Q(description__icontains=query)).distinct()
 
+    if addon is None:
+        addon = BasicAddon(service_fee_percentage=0)  
     # Ensure addon is not None before passing it to the template
     context = {
         "all_products": all_products,
